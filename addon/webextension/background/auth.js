@@ -157,6 +157,19 @@ window.auth = (function () {
     });
   };
 
+  exports.ensureLoggedIn = function () {
+    return browser.cookies.get({
+      url: main.getBackend(),
+      name: 'user'
+    })
+    .then(cookie => {
+      if (!cookie) {
+        return login();
+      }
+      return Promise.resolve(true);
+    });
+  };
+
   exports.getSentryPublicDSN = function () {
     return sentryPublicDSN || defaultSentryDsn;
   };
